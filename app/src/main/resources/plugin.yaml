@@ -9,14 +9,14 @@ spec:
   requires: ">=2.22.0"
   author:
     name: Handsome
-    website: https://github.com/Handsome
+    website: https://www.xhhao.com/
   logo: logo.svg
-  homepage: https://github.com/Handsome/redis-connector#readme
-  repo: https://github.com/Handsome/redis-connector
-  issues: https://github.com/Handsome/redis-connector/issues
-  displayName: "Redis Connector"
-  description: "Halo Redis 连接器插件，复用 Halo 主程序的 Redis 配置"
+  homepage: https://www.xhhao.com/
+  repo: https://github.com/acanyo/plugin-redis-connector
+  issues: https://github.com/acanyo/plugin-redis-connector/issues
+  displayName: "Redis 连接器"
+  description: "为其他插件提供统一的 Redis 操作能力"
   license:
     - name: "GPL-3.0"
-      url: "https://github.com/Handsome/redis-connector/blob/main/LICENSE"
+      url: "https://github.com/acanyo/plugin-redis-connector/blob/main/LICENSE"
   configMapName: "redis-connector-configmap"

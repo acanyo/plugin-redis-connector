@@ -68,7 +68,7 @@ public class RedisClientImpl implements RedisClient {
 
             String haloRedisEnabled = environment.getProperty("halo.redis.enabled", "false");
             if (!"true".equalsIgnoreCase(haloRedisEnabled)) {
-                log.info("{} Halo Redis not enabled", LOG_PREFIX);
+                log.info("{} Halo 未启用 Redis", LOG_PREFIX);
                 return;
             }
 
@@ -77,7 +77,7 @@ public class RedisClientImpl implements RedisClient {
             String password = environment.getProperty("spring.data.redis.password", "");
             int database = Integer.parseInt(environment.getProperty("spring.data.redis.database", "0"));
 
-            log.info("{} Connecting to Redis: {}:{}/{}", LOG_PREFIX, host, port, database);
+            log.info("{} 正在连接 Redis: {}:{}/{}", LOG_PREFIX, host, port, database);
             doInitialize(host, port, password, database);
         }
     }
@@ -95,7 +95,7 @@ public class RedisClientImpl implements RedisClient {
             if (jedisPool != null) {
                 shutdown();
             }
-            log.info("{} Connecting to Redis (plugin config): {}:{}/{}", LOG_PREFIX, host, port, database);
+            log.info("{} 正在连接 Redis（插件配置）: {}:{}/{}", LOG_PREFIX, host, port, database);
             doInitialize(host, port, password, database);
         }
     }
@@ -107,9 +107,9 @@ public class RedisClientImpl implements RedisClient {
         if (jedisPool != null) {
             try {
                 jedisPool.close();
-                log.info("{} Redis connection closed", LOG_PREFIX);
+                log.info("{} Redis 连接已关闭", LOG_PREFIX);
             } catch (Exception e) {
-                log.error("{} Error closing Redis: {}", LOG_PREFIX, e.getMessage());
+                log.error("{} 关闭 Redis 连接失败: {}", LOG_PREFIX, e.getMessage());
             } finally {
                 jedisPool = null;
                 available = false;
@@ -145,10 +145,10 @@ public class RedisClientImpl implements RedisClient {
             try (Jedis jedis = jedisPool.getResource()) {
                 jedis.ping();
                 available = true;
-                log.info("{} Redis connected successfully", LOG_PREFIX);
+                log.info("{} Redis 连接成功", LOG_PREFIX);
             }
         } catch (Exception e) {
-            log.error("{} Failed to connect Redis: {}", LOG_PREFIX, e.getMessage());
+            log.error("{} Redis 连接失败: {}", LOG_PREFIX, e.getMessage());
             available = false;
         }
     }
@@ -167,7 +167,7 @@ public class RedisClientImpl implements RedisClient {
         return Mono.fromCallable(callable)
             .subscribeOn(Schedulers.boundedElastic())
             .onErrorResume(e -> {
-                log.error("{} Redis error: {}", LOG_PREFIX, e.getMessage());
+                log.error("{} Redis 操作失败: {}", LOG_PREFIX, e.getMessage());
                 return Mono.just(defaultValue);
             });
     }

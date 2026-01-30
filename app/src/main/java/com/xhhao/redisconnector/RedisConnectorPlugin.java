@@ -31,20 +31,16 @@ public class RedisConnectorPlugin extends BasePlugin {
 
     @Override
     public void start() {
-        log.info("[RedisConnector] Plugin starting...");
+        log.info("[RedisConnector] 插件启动中...");
         redisConfigService.reconnect().subscribe(result -> {
-            log.info("[RedisConnector] Connection result: {}", result);
+            log.info("[RedisConnector] 连接结果: {}", result);
         });
-        
         RedisClientHolder.setClient(redisClient);
-        log.info("[RedisConnector] Plugin started");
     }
 
     @Override
     public void stop() {
-        log.info("[RedisConnector] Plugin stopping...");
         RedisClientHolder.clear();
         redisClient.shutdown();
-        log.info("[RedisConnector] Plugin stopped");
     }
 }

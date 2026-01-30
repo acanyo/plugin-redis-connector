@@ -42,7 +42,6 @@ public class RedisClientImpl implements RedisClient {
     @Nullable
     private volatile JedisPool jedisPool;
 
-    @Getter
     private volatile boolean available = false;
 
     public RedisClientImpl(Environment environment) {

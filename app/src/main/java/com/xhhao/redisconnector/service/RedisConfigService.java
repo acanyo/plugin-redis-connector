@@ -147,10 +147,6 @@ public class RedisConfigService {
             // 先关闭现有连接
             redisClient.shutdown();
 
-            // 设置 keyPrefix
-            String keyPrefix = pluginConfig.getOrDefault("keyPrefix", "redis-connector:");
-            redisClient.setKeyPrefix(keyPrefix);
-
             // 检查 Halo 配置
             String haloRedisEnabled = environment.getProperty("halo.redis.enabled", "false");
             String haloHost = environment.getProperty("spring.data.redis.host", "");

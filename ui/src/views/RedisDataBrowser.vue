@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { ref, onMounted } from 'vue'
-import { VCard, VButton, VSpace, VLoading, Toast, VEmpty, VEntity, VEntityField, VEntityContainer, VModal, Dialog, VDropdownItem, HasPermission } from '@halo-dev/components'
+import { VCard, VButton, VSpace, VLoading, Toast, VEmpty, VEntity, VEntityField, VEntityContainer, VModal, Dialog, VDropdownItem } from '@halo-dev/components'
 import { FormKit } from '@formkit/vue'
 import { axiosInstance } from '@halo-dev/api-client'
 import RiRefreshLine from '~icons/ri/refresh-line'

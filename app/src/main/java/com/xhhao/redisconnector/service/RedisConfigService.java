@@ -110,31 +110,64 @@ public class RedisConfigService {
      */
     public Mono<Map<String, Object>> saveRedisConfig(Map<String, String> config) {
         return client.fetch(ConfigMap.class, CONFIG_MAP_NAME)
-            .flatMap(configMap -> {
-                try {
-                    Map<String, String> data = configMap.getData();
-                    if (data == null) {
-                        data = new HashMap<>();
-                        configMap.setData(data);
-                    }
-                    data.put(REDIS_GROUP, objectMapper.writeValueAsString(config));
-                    return client.update(configMap);
-                } catch (Exception e) {
-                    return Mono.error(e);
-                }
-            })
+            .flatMap(configMap -> updateConfigMap(configMap, config))
+            .switchIfEmpty(Mono.defer(() -> createConfigMap(config)))
             .map(saved -> {
                 Map<String, Object> result = new HashMap<>();
                 result.put("success", true);
                 result.put("message", "配置已保存，请点击重新连接");
+                log.info("Redis 配置保存成功");
                 return result;
             })
             .onErrorResume(e -> {
+                log.error("保存 Redis 配置失败: {}", e.getMessage());
                 Map<String, Object> result = new HashMap<>();
                 result.put("success", false);
                 result.put("message", "保存失败: " + e.getMessage());
                 return Mono.just(result);
             });
+    }
+
+    /**
+     * 更新已存在的 ConfigMap
+     */
+    private Mono<ConfigMap> updateConfigMap(ConfigMap configMap, Map<String, String> config) {
+        try {
+            Map<String, String> data = configMap.getData();
+            if (data == null) {
+                data = new HashMap<>();
+                configMap.setData(data);
+            }
+            data.put(REDIS_GROUP, objectMapper.writeValueAsString(config));
+            log.info("更新 ConfigMap: {}", CONFIG_MAP_NAME);
+            return client.update(configMap);
+        } catch (Exception e) {
+            return Mono.error(e);
+        }
+    }
+
+    /**
+     * 创建新的 ConfigMap
+     */
+    private Mono<ConfigMap> createConfigMap(Map<String, String> config) {
+        try {
+            ConfigMap configMap = new ConfigMap();
+            configMap.setApiVersion("v1alpha1");
+            configMap.setKind("ConfigMap");
+            
+            run.halo.app.extension.Metadata metadata = new run.halo.app.extension.Metadata();
+            metadata.setName(CONFIG_MAP_NAME);
+            configMap.setMetadata(metadata);
+            
+            Map<String, String> data = new HashMap<>();
+            data.put(REDIS_GROUP, objectMapper.writeValueAsString(config));
+            configMap.setData(data);
+            
+            log.info("创建新的 ConfigMap: {}", CONFIG_MAP_NAME);
+            return client.create(configMap);
+        } catch (Exception e) {
+            return Mono.error(e);
+        }
     }
 
     /**

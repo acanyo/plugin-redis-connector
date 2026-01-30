@@ -2,6 +2,7 @@ package com.xhhao.redisconnector.api;
 
 import com.xhhao.redisconnector.api.internal.RedisClientHolder;
 import reactor.core.publisher.Mono;
+import redis.clients.jedis.JedisPool;
 
 import java.util.List;
 import java.util.Map;
@@ -67,6 +68,34 @@ public final class Redis {
     public static boolean isAvailable() {
         RedisClient client = getClient();
         return client != null && client.isAvailable();
+    }
+
+    /**
+     * 获取原始 JedisPool 连接池
+     * <p>
+     * 当封装的 API 无法满足需求时，可以直接获取 JedisPool 进行操作。
+     * </p>
+     *
+     * <h3>使用示例</h3>
+     * <pre>{@code
+     * JedisPool pool = Redis.getJedisPool();
+     * if (pool != null) {
+     *     try (Jedis jedis = pool.getResource()) {
+     *         // 执行自定义操作
+     *         jedis.lpush("mylist", "value1", "value2");
+     *         Pipeline pipeline = jedis.pipelined();
+     *         pipeline.set("key1", "value1");
+     *         pipeline.set("key2", "value2");
+     *         pipeline.sync();
+     *     }
+     * }
+     * }</pre>
+     *
+     * @return JedisPool 实例，未初始化时返回 null
+     */
+    public static JedisPool getJedisPool() {
+        RedisClient client = getClient();
+        return client != null ? client.getJedisPool() : null;
     }
 
     /**

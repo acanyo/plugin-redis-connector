@@ -21,6 +21,9 @@ javadoc.options.encoding = "UTF-8"
 dependencies {
     api platform('run.halo.tools.platform:plugin:2.22.0')
     compileOnly 'run.halo.app:api'
+    
+    // Jedis - 暴露 JedisPool 给其他插件使用
+    api 'redis.clients:jedis:5.1.0'
 }
 
 test {

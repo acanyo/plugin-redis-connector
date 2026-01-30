@@ -1,0 +1,52 @@
+plugins {
+    id 'java'
+    id "io.freefair.lombok" version "8.13"
+    id "run.halo.plugin.devtools" version "0.6.1"
+}
+
+group = rootProject.group
+version = rootProject.version
+
+jar {
+    archiveBaseName.set("redis-connector")
+    dependsOn(":api:jar")
+}
+
+dependencies {
+    implementation project(':api')
+    implementation platform('run.halo.tools.platform:plugin:2.22.0')
+    compileOnly 'run.halo.app:api'
+
+    // Redis - Jedis 纯 Java 客户端，避免类加载器冲突
+    implementation 'redis.clients:jedis:5.1.0'
+
+    testImplementation 'run.halo.app:api'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'io.projectreactor:reactor-test'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+
+test {
+    useJUnitPlatform()
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = "UTF-8"
+    options.release = 21
+}
+
+tasks.register('processUiResources', Copy) {
+    from project(':ui').layout.buildDirectory.dir('dist')
+    into layout.buildDirectory.dir('resources/main/console')
+    dependsOn project(':ui').tasks.named('assemble')
+    shouldRunAfter tasks.named('processResources')
+}
+
+tasks.named('classes') {
+    dependsOn tasks.named('processUiResources')
+}
+
+halo {
+    version = '2.22'
+    containerName = 'RedisConnector'
+}

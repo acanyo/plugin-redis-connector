@@ -1,0 +1,22 @@
+# Refer https://docs.halo.run/developer-guide/plugin/basics/manifest
+
+apiVersion: plugin.halo.run/v1alpha1
+kind: Plugin
+metadata:
+  name: redis-connector
+spec:
+  enabled: true
+  requires: ">=2.22.0"
+  author:
+    name: Handsome
+    website: https://github.com/Handsome
+  logo: logo.svg
+  homepage: https://github.com/Handsome/redis-connector#readme
+  repo: https://github.com/Handsome/redis-connector
+  issues: https://github.com/Handsome/redis-connector/issues
+  displayName: "Redis Connector"
+  description: "Halo Redis 连接器插件，复用 Halo 主程序的 Redis 配置"
+  license:
+    - name: "GPL-3.0"
+      url: "https://github.com/Handsome/redis-connector/blob/main/LICENSE"
+  configMapName: "redis-connector-configmap"

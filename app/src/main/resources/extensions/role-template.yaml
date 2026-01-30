@@ -1,0 +1,38 @@
+apiVersion: v1alpha1
+kind: Role
+metadata:
+  name: redis-connector-role-view
+  labels:
+    halo.run/role-template: "true"
+  annotations:
+    rbac.authorization.halo.run/module: "Redis 连接"
+    rbac.authorization.halo.run/display-name: "Redis 查看"
+    rbac.authorization.halo.run/ui-permissions: |
+      ["plugin:redis-connector:view"]
+rules:
+  - apiGroups: ["api.redis.xhhao.com"]
+    resources: ["*"]
+    verbs: ["get", "list"]
+  - nonResourceURLs: ["/apis/api.redis.xhhao.com/*"]
+    verbs: ["get"]
+
+---
+apiVersion: v1alpha1
+kind: Role
+metadata:
+  name: redis-connector-role-manage
+  labels:
+    halo.run/role-template: "true"
+  annotations:
+    rbac.authorization.halo.run/module: "Redis 连接"
+    rbac.authorization.halo.run/display-name: "Redis 管理"
+    rbac.authorization.halo.run/dependencies: |
+      ["redis-connector-role-view"]
+    rbac.authorization.halo.run/ui-permissions: |
+      ["plugin:redis-connector:manage"]
+rules:
+  - apiGroups: ["api.redis.xhhao.com"]
+    resources: ["*"]
+    verbs: ["*"]
+  - nonResourceURLs: ["/apis/api.redis.xhhao.com/*"]
+    verbs: ["*"]

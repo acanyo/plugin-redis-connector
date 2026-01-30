@@ -76,8 +76,7 @@ application-local.yaml
 application-local.properties
 
 /ui/build/
-/workplace/
+**/workplace/
 /src/main/resources/console/
 
-### Halo dev config
-halo-dev.yaml
+

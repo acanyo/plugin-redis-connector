@@ -10,6 +10,14 @@ Halo 2.x Redis 连接器插件，为其他插件提供统一的 Redis 操作能�
 - 内置数据浏览器，可视化管理 Redis 数据
 - 完善的权限控制
 
+## 🌐 演示与交流
+
+- **演示站点1**：[https://www.xhhao.com/](https://www.xhhao.com/)
+- **文档**：[https://docs.lik.cc/](https://docs.lik.cc/)
+- **QQ 交流群**：[![QQ群](https://www.xhhao.com/upload/iShot_2025-03-03_16.03.00.png)](https://www.xhhao.com/upload/iShot_2025-03-03_16.03.00.png)
+
+
+
 ## 配置
 
 ### 方式一：使用 Halo 环境配置（推荐）
@@ -26,8 +34,6 @@ docker run -d \
   -e HALO_REDIS_ENABLED=true \
   halohub/halo:2.22
 ```
-
-参考文档：[Halo Redis 配置](https://docs.halo.run/getting-started/install/config/#redis-%E9%9B%86%E6%88%90)
 
 ### 方式二：插件配置
 

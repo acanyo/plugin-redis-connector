@@ -137,6 +137,14 @@ onMounted(() => {
 
 <template>
   <div class=":uno: p-4">
+    <!-- 提示信息 -->
+    <div class=":uno: mb-4 rounded-lg bg-blue-50 p-3">
+      <p class=":uno: text-sm text-blue-700">
+        💡 专业的 Redis 可视化管理推荐使用
+        <a href="https://github.com/qishibo/AnotherRedisDesktopManager" target="_blank" class=":uno: font-medium underline">Another Redis Desktop Manager</a>
+      </p>
+    </div>
+
     <!-- Key 列表 -->
     <VCard :body-class="['!p-0']">
       <template #header>
